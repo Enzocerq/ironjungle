@@ -105,7 +105,7 @@ header.scrolled .logo {
 }
 
 .hero h1 {
-    font-size: 40px;
+    font-size: 30px;
     margin-bottom: 20px;
     color: var(--primary);
     text-transform: uppercase;
