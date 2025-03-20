@@ -74,3 +74,59 @@ document.querySelectorAll('a[href^="https://app.tecnofit.com.br"]').forEach(link
         fbq('track', 'InitiateCheckout');
     });
 });
+
+// Carousel functionality
+function setupCarousels() {
+    const carousels = document.querySelectorAll('.carousel-container');
+    
+    carousels.forEach(carousel => {
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        const dots = carousel.querySelectorAll('.carousel-dot');
+        let currentSlide = 0;
+        let slideInterval;
+
+        // Function to show a specific slide
+        const showSlide = (index) => {
+            // Hide all slides
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            
+            // Show the selected slide
+            slides[index].classList.add('active');
+            
+            // Update active dot
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
+            
+            currentSlide = index;
+        };
+
+        // Set up automatic sliding
+        const startSlideshow = () => {
+            slideInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }, 5000); // Change slide every 5 seconds
+        };
+
+        // Initialize the slideshow
+        startSlideshow();
+
+        // Set up click event for dots
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                clearInterval(slideInterval);
+                showSlide(parseInt(dot.dataset.index));
+                startSlideshow();
+            });
+        });
+
+        // Pause slideshow on hover
+        carousel.addEventListener('mouseenter', () => clearInterval(slideInterval));
+        carousel.addEventListener('mouseleave', startSlideshow);
+    });
+}
+
+// Initialize carousels when DOM is loaded
+document.addEventListener('DOMContentLoaded', setupCarousels);
