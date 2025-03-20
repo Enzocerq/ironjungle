@@ -69,6 +69,25 @@ header.scrolled .logo {
     font-weight: 600;
     font-size: 16px;
     transition: color 0.3s;
+    position: relative; /* Required for the absolute positioning of the underline */
+    padding: 5px 0; /* Add padding to create space for the underline */
+}
+
+/* Add underline animation effect to menu items */
+.nav-menu a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background: var(--primary);
+    transition: all 0.3s ease;
+}
+
+.nav-menu a:hover::after {
+    width: 100%;
+    left: 0;
 }
 
 .nav-menu a:hover {
@@ -413,24 +432,16 @@ footer p {
         padding: 15px 0; /* Larger tap target */
         display: block;
         width: 100%;
-        position: relative;
     }
     
-    /* Add a subtle animation effect to menu items */
+    /* Adjust the underline animation for mobile */
     .nav-menu a::after {
-        content: '';
-        position: absolute;
-        width: 0;
-        height: 2px;
         bottom: 10px;
-        left: 50%;
-        background: var(--primary);
-        transition: all 0.3s ease;
     }
     
     .nav-menu a:hover::after {
-        width: 30%;
-        left: 35%;
+        width: 30%; /* Shorter underline for mobile */
+        left: 35%; /* Center the shorter underline */
     }
     
     /* Dark overlay when menu is open */
