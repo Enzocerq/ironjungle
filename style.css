@@ -673,17 +673,37 @@ footer p {
 
 /* Specific styling for the Estrutura section carousel */
 .estrutura .carousel-container {
-    aspect-ratio: 9/16; /* Portrait aspect ratio (vertical format) */
+    aspect-ratio: auto; /* Remove fixed aspect ratio */
+    height: auto; /* Allow height to adjust based on content */
+    min-height: auto; /* Remove min-height constraints */
 }
 
-/* Adjust object positioning for portrait images */
+/* Make images in Estrutura carousel display at original size */
 .estrutura .carousel-slide img {
-    object-position: top center; /* Focus on the top portion of images */
+    object-fit: contain; /* Show full image without cropping */
+    width: auto; /* Don't force width to 100% */
+    max-width: 100%; /* But ensure it doesn't overflow container */
+    height: auto; /* Height should be proportional to width */
+    margin: 0 auto; /* Center the image if smaller than container */
 }
 
-/* For very small screens, make it less extreme */
+/* Override mobile specific styles */
+@media (max-width: 992px) {
+    .estrutura .carousel-container {
+        min-height: auto; /* Remove min-height constraints */
+        aspect-ratio: auto;
+    }
+    
+    /* Ensure proper container sizing */
+    .estrutura .sobre-content .sobre-img {
+        width: 100%;
+        max-width: none; /* Don't limit the width */
+    }
+}
+
+/* Remove the custom aspect ratio on small screens too */
 @media (max-width: 576px) {
     .estrutura .carousel-container {
-        aspect-ratio: 3/4; /* Less extreme portrait ratio on small screens */
+        aspect-ratio: auto;
     }
 }
