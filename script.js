@@ -148,6 +148,12 @@ function setupCarousels() {
 
         // Only add touch events for mobile devices
         if (isMobile) {
+            // Define touch variables - these need to be in this scope
+            let isDragging = false;
+            let startX = 0;
+            let endX = 0;
+            const threshold = 50; // Minimum distance to register as a swipe
+
             function handleTouchStart(e) {
                 isDragging = true;
                 startX = e.touches[0].clientX;
@@ -155,7 +161,7 @@ function setupCarousels() {
             
             function handleTouchMove(e) {
                 if (!isDragging) return;
-                e.preventDefault();
+                e.preventDefault(); // Prevent scrolling while swiping
             }
             
             function handleTouchEnd(e) {
