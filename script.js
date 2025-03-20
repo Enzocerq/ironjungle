@@ -84,13 +84,6 @@ function setupCarousels() {
         const slides = carousel.querySelectorAll('.carousel-slide');
         const dots = carousel.querySelectorAll('.carousel-dot');
         let currentSlide = 0;
-        let slideInterval;
-        
-        // Swipe variables for mobile
-        let startX = 0;
-        let endX = 0;
-        let isDragging = false;
-        const threshold = 50;
         
         // Add navigation arrows to the carousel
         const nav = document.createElement('div');
@@ -132,29 +125,15 @@ function setupCarousels() {
         
         // Navigate to previous slide
         const prevSlide = () => {
-            clearInterval(slideInterval);
             const newIndex = (currentSlide - 1 + slides.length) % slides.length;
             showSlide(newIndex, 'right'); // Animation from right
-            startSlideshow();
         };
         
         // Navigate to next slide
         const nextSlide = () => {
-            clearInterval(slideInterval);
             const newIndex = (currentSlide + 1) % slides.length;
             showSlide(newIndex, 'left'); // Animation from left
-            startSlideshow();
         };
-
-        // Set up automatic sliding
-        const startSlideshow = () => {
-            slideInterval = setInterval(() => {
-                nextSlide();
-            }, 5000); // Change slide every 5 seconds
-        };
-
-        // Initialize the slideshow
-        startSlideshow();
 
         // Set up click events for arrows
         prevArrow.addEventListener('click', prevSlide);
@@ -163,9 +142,7 @@ function setupCarousels() {
         // Set up click event for dots
         dots.forEach(dot => {
             dot.addEventListener('click', () => {
-                clearInterval(slideInterval);
                 showSlide(parseInt(dot.dataset.index));
-                startSlideshow();
             });
         });
 
@@ -174,7 +151,6 @@ function setupCarousels() {
             function handleTouchStart(e) {
                 isDragging = true;
                 startX = e.touches[0].clientX;
-                clearInterval(slideInterval);
             }
             
             function handleTouchMove(e) {
@@ -201,7 +177,6 @@ function setupCarousels() {
                 }
                 
                 isDragging = false;
-                startSlideshow();
             }
             
             // Add touch event listeners for mobile
@@ -209,10 +184,6 @@ function setupCarousels() {
             carousel.addEventListener('touchmove', handleTouchMove, {passive: false});
             carousel.addEventListener('touchend', handleTouchEnd);
         }
-        
-        // Pause slideshow on hover (desktop only)
-        carousel.addEventListener('mouseenter', () => clearInterval(slideInterval));
-        carousel.addEventListener('mouseleave', startSlideshow);
     });
 }
 
