@@ -78,22 +78,50 @@ document.querySelectorAll('a[href^="https://app.tecnofit.com.br"]').forEach(link
 // Carousel functionality
 function setupCarousels() {
     const carousels = document.querySelectorAll('.carousel-container');
+    const isMobile = window.innerWidth <= 768; // Detect mobile device
     
     carousels.forEach(carousel => {
         const slides = carousel.querySelectorAll('.carousel-slide');
         const dots = carousel.querySelectorAll('.carousel-dot');
         let currentSlide = 0;
         let slideInterval;
+        
+        // Swipe variables for mobile
+        let startX = 0;
+        let endX = 0;
+        let isDragging = false;
+        const threshold = 50;
+        
+        // Add navigation arrows to the carousel
+        const nav = document.createElement('div');
+        nav.className = 'carousel-nav';
+        
+        const prevArrow = document.createElement('div');
+        prevArrow.className = 'carousel-arrow prev';
+        prevArrow.innerHTML = '<i class="fas fa-chevron-left"></i>';
+        
+        const nextArrow = document.createElement('div');
+        nextArrow.className = 'carousel-arrow next';
+        nextArrow.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        
+        nav.appendChild(prevArrow);
+        nav.appendChild(nextArrow);
+        carousel.appendChild(nav);
 
         // Function to show a specific slide
-        const showSlide = (index) => {
+        const showSlide = (index, direction = '') => {
             // Hide all slides
             slides.forEach(slide => {
-                slide.classList.remove('active');
+                slide.classList.remove('active', 'swipe-left', 'swipe-right');
             });
             
-            // Show the selected slide
+            // Show the selected slide with animation if direction is specified
             slides[index].classList.add('active');
+            if (direction === 'left') {
+                slides[index].classList.add('swipe-left');
+            } else if (direction === 'right') {
+                slides[index].classList.add('swipe-right');
+            }
             
             // Update active dot
             dots.forEach(dot => dot.classList.remove('active'));
@@ -101,17 +129,36 @@ function setupCarousels() {
             
             currentSlide = index;
         };
+        
+        // Navigate to previous slide
+        const prevSlide = () => {
+            clearInterval(slideInterval);
+            const newIndex = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(newIndex, 'right'); // Animation from right
+            startSlideshow();
+        };
+        
+        // Navigate to next slide
+        const nextSlide = () => {
+            clearInterval(slideInterval);
+            const newIndex = (currentSlide + 1) % slides.length;
+            showSlide(newIndex, 'left'); // Animation from left
+            startSlideshow();
+        };
 
         // Set up automatic sliding
         const startSlideshow = () => {
             slideInterval = setInterval(() => {
-                currentSlide = (currentSlide + 1) % slides.length;
-                showSlide(currentSlide);
+                nextSlide();
             }, 5000); // Change slide every 5 seconds
         };
 
         // Initialize the slideshow
         startSlideshow();
+
+        // Set up click events for arrows
+        prevArrow.addEventListener('click', prevSlide);
+        nextArrow.addEventListener('click', nextSlide);
 
         // Set up click event for dots
         dots.forEach(dot => {
@@ -122,7 +169,48 @@ function setupCarousels() {
             });
         });
 
-        // Pause slideshow on hover
+        // Only add touch events for mobile devices
+        if (isMobile) {
+            function handleTouchStart(e) {
+                isDragging = true;
+                startX = e.touches[0].clientX;
+                clearInterval(slideInterval);
+            }
+            
+            function handleTouchMove(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+            }
+            
+            function handleTouchEnd(e) {
+                if (!isDragging) return;
+                
+                endX = e.changedTouches[0].clientX;
+                const diff = startX - endX;
+                
+                // Check if the swipe was significant enough
+                if (Math.abs(diff) > threshold) {
+                    // Right to left swipe (next slide)
+                    if (diff > 0) {
+                        nextSlide();
+                    } 
+                    // Left to right swipe (previous slide)
+                    else {
+                        prevSlide();
+                    }
+                }
+                
+                isDragging = false;
+                startSlideshow();
+            }
+            
+            // Add touch event listeners for mobile
+            carousel.addEventListener('touchstart', handleTouchStart, {passive: false});
+            carousel.addEventListener('touchmove', handleTouchMove, {passive: false});
+            carousel.addEventListener('touchend', handleTouchEnd);
+        }
+        
+        // Pause slideshow on hover (desktop only)
         carousel.addEventListener('mouseenter', () => clearInterval(slideInterval));
         carousel.addEventListener('mouseleave', startSlideshow);
     });
