@@ -670,3 +670,20 @@ footer p {
 .swipe-right {
     animation: swipeRight 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
+
+/* Specific styling for the Estrutura section carousel */
+.estrutura .carousel-container {
+    aspect-ratio: 9/16; /* Portrait aspect ratio (vertical format) */
+}
+
+/* Adjust object positioning for portrait images */
+.estrutura .carousel-slide img {
+    object-position: top center; /* Focus on the top portion of images */
+}
+
+/* For very small screens, make it less extreme */
+@media (max-width: 576px) {
+    .estrutura .carousel-container {
+        aspect-ratio: 3/4; /* Less extreme portrait ratio on small screens */
+    }
+}
