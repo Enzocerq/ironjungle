@@ -362,6 +362,28 @@ footer p {
     .sobre-img, .sobre-text {
         width: 100%;
     }
+    
+    /* Estrutura section mobile layout - text first */
+    .estrutura .sobre-content .sobre-img {
+        order: 2;
+    }
+    
+    .estrutura .sobre-content .sobre-text {
+        order: 1;
+    }
+
+    /* Section mobile layouts - text first for all sections */
+    .estrutura .sobre-content .sobre-img,
+    .equipe .sobre-content .sobre-img,
+    .resultados .sobre-content .sobre-img {
+        order: 2;
+    }
+    
+    .estrutura .sobre-content .sobre-text,
+    .equipe .sobre-content .sobre-text,
+    .resultados .sobre-content .sobre-text {
+        order: 1;
+    }
 }
 
 @media (max-width: 768px) {
