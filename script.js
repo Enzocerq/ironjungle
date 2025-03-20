@@ -1,9 +1,17 @@
-// Mobile Menu Toggle
+// Mobile Menu Toggle - Updated
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const navMenu = document.getElementById('navMenu');
 
+// Create backdrop element for when menu is open
+const backdrop = document.createElement('div');
+backdrop.className = 'menu-backdrop';
+document.body.appendChild(backdrop);
+
+// Toggle menu and backdrop
 mobileMenuBtn.addEventListener('click', () => {
     navMenu.classList.toggle('active');
+    backdrop.classList.toggle('active');
+    document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : ''; // Prevent scrolling when menu is open
     
     const icon = mobileMenuBtn.querySelector('i');
     if (icon.classList.contains('fa-bars')) {
@@ -13,6 +21,30 @@ mobileMenuBtn.addEventListener('click', () => {
         icon.classList.remove('fa-times');
         icon.classList.add('fa-bars');
     }
+});
+
+// Close menu when clicking on backdrop
+backdrop.addEventListener('click', () => {
+    navMenu.classList.remove('active');
+    backdrop.classList.remove('active');
+    document.body.style.overflow = '';
+    
+    const icon = mobileMenuBtn.querySelector('i');
+    icon.classList.remove('fa-times');
+    icon.classList.add('fa-bars');
+});
+
+// Close menu when clicking on a nav link
+document.querySelectorAll('.nav-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        backdrop.classList.remove('active');
+        document.body.style.overflow = '';
+        
+        const icon = mobileMenuBtn.querySelector('i');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+    });
 });
 
 // Header Scroll Effect
