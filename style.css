@@ -235,6 +235,13 @@ header.scrolled .logo {
     display: block;
 }
 
+.sobre-img video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+
 .sobre-text {
     flex: 1;
 }
