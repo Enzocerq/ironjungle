@@ -2,6 +2,7 @@
     --primary: #b8860b;
     --secondary: #333;
     --dark: #111;
+    --black: #000;
     --light: #f9f9f9;
     --white: #fff;
 }
@@ -140,7 +141,7 @@ header.scrolled .logo {
 /* Planos Section */
 .planos {
     padding: 100px 0;
-    background-color: var(--dark);
+    background-color: var(--black);
 }
 
 .section-title {
@@ -214,7 +215,7 @@ header.scrolled .logo {
 /* Sobre Section */
 .sobre {
     padding: 100px 0;
-    background-color: #000;
+    background-color: var(--black);
 }
 
 .sobre-content {
@@ -315,7 +316,7 @@ header.scrolled .logo {
 /* Footer */
 footer {
     padding: 30px 0;
-    background-color: #000;
+    background-color: var(--black);
     text-align: center;
 }
 
