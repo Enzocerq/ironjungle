@@ -11,6 +11,7 @@ document.body.appendChild(backdrop);
 mobileMenuBtn.addEventListener('click', () => {
     navMenu.classList.toggle('active');
     backdrop.classList.toggle('active');
+    mobileMenuBtn.classList.toggle('active'); // Add active class to the button too
     document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : ''; // Prevent scrolling when menu is open
     
     const icon = mobileMenuBtn.querySelector('i');
@@ -28,6 +29,7 @@ backdrop.addEventListener('click', () => {
     navMenu.classList.remove('active');
     backdrop.classList.remove('active');
     document.body.style.overflow = '';
+    mobileMenuBtn.classList.remove('active');
     
     const icon = mobileMenuBtn.querySelector('i');
     icon.classList.remove('fa-times');
@@ -40,6 +42,7 @@ document.querySelectorAll('.nav-menu a').forEach(link => {
         navMenu.classList.remove('active');
         backdrop.classList.remove('active');
         document.body.style.overflow = '';
+        mobileMenuBtn.classList.remove('active');
         
         const icon = mobileMenuBtn.querySelector('i');
         icon.classList.remove('fa-times');
