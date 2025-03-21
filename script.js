@@ -183,20 +183,39 @@ function setupCarousels() {
 
         // Only add touch events for mobile devices
         if (isMobile) {
-            // Define touch variables - these need to be in this scope
+            // Define touch variables
             let isDragging = false;
             let startX = 0;
-            let endX = 0;
-            const threshold = 50; // Minimum distance to register as a swipe
+            let startY = 0;
+            let moveX = 0;
+            let moveY = 0;
+            let isHorizontalSwipe = false;
+            const threshold = 50;
+            const directionThreshold = 10; // Minimum distance to determine swipe direction
 
             function handleTouchStart(e) {
                 isDragging = true;
                 startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                isHorizontalSwipe = false; // Reset direction detection
             }
             
             function handleTouchMove(e) {
                 if (!isDragging) return;
-                e.preventDefault(); // Prevent scrolling while swiping
+                
+                moveX = e.touches[0].clientX - startX;
+                moveY = e.touches[0].clientY - startY;
+                
+                // Determine if this is a horizontal or vertical swipe
+                // Only set direction once we have enough movement to determine
+                if (!isHorizontalSwipe && (Math.abs(moveX) > directionThreshold || Math.abs(moveY) > directionThreshold)) {
+                    isHorizontalSwipe = Math.abs(moveX) > Math.abs(moveY);
+                }
+                
+                // Only prevent default for horizontal swipes
+                if (isHorizontalSwipe) {
+                    e.preventDefault();
+                }
             }
             
             function handleTouchEnd(e) {
@@ -205,8 +224,8 @@ function setupCarousels() {
                 endX = e.changedTouches[0].clientX;
                 const diff = startX - endX;
                 
-                // Check if the swipe was significant enough
-                if (Math.abs(diff) > threshold) {
+                // Only process as a carousel swipe if it was determined to be horizontal
+                if (isHorizontalSwipe && Math.abs(diff) > threshold) {
                     // Right to left swipe (next slide)
                     if (diff > 0) {
                         nextSlide();
@@ -221,7 +240,7 @@ function setupCarousels() {
             }
             
             // Add touch event listeners for mobile
-            carousel.addEventListener('touchstart', handleTouchStart, {passive: false});
+            carousel.addEventListener('touchstart', handleTouchStart, {passive: true});
             carousel.addEventListener('touchmove', handleTouchMove, {passive: false});
             carousel.addEventListener('touchend', handleTouchEnd);
         }
