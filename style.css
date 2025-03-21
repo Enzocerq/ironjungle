@@ -421,6 +421,11 @@ footer p {
     .resultados .sobre-content .sobre-text {
         order: 1;
     }
+    
+    .estrutura .carousel-container {
+        min-height: auto;
+        aspect-ratio: auto;
+    }
 }
 
 @media (max-width: 768px) {
@@ -533,6 +538,10 @@ footer p {
 
     .sobre-text h2 {
         font-size: 28px;
+    }
+    
+    .estrutura .carousel-container {
+        aspect-ratio: auto;
     }
 }
 
@@ -796,4 +805,9 @@ footer p {
     .estrutura .carousel-container {
         aspect-ratio: auto;
     }
+}
+
+/* Força que o carrossel da equipe mantenha 9/16 em todos os dispositivos */
+.equipe .carousel-container {
+    aspect-ratio: 9/16;
 }
