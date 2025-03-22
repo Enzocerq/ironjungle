@@ -167,6 +167,7 @@ header.scrolled .logo {
     transition: all 0.3s;
     border: none;
     cursor: pointer;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9); /* Sombreamento aumentado */
 }
 
 .btn:hover {
